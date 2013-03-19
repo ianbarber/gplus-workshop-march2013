@@ -220,10 +220,64 @@ function load_friends() {
   });
 }
 ```
-    
-6. That's it!
+
+6. Adding Disconnect.
 -------------------------
 
-You now have signed in, and retrieved the users details. There are more Quickstarts which show how to do this in a number of languages up on the Google+ Developers page. There's also a whole lot of documentation, and examples of how to implement each of the other features. 
+It's really important (and in fact required!) that if users can sign-in with Google+, they should have a way to disconnect their Google account from your application. We can add a disconnect button to our page with a new button, which you can add just below the Sign-In button's gPlusButton div.
+
+```html
+<div id="gDisconnect" style="display:none">
+  <button id="disconnect" >Disconnect your Google account from this app</button>
+</div>
+```
+
+Then we need to display the button once the user has signed in. In the callback, display the button:
+
+```javascript
+$('#gDisconnect').show();
+```
+
+Then we need to actually handle the disconnect. This API is actually part of the Google oAuth 2.0 APIs rather the Google+ API, so we have to make a slightly different call. All we need to do is send the access token to the revoke endpoint: https://accounts.google.com/o/oauth2/revoke?token=TOKEN_GOES_HERE. 
+
+We can actually get the token a couple of different ways, either from the gapi library using gapi.auth.getToken().access_token, or by storing the authResult in some var when the callback is fired and retrieving it from authResult.access_token.
+
+The easiest way to do that now is to use the ajax helper in jQuery. In our success callback from the ajax query we can empty the people and profile information, and reinstate the sign-in button. We can write the function and put it in our script file:
+
+```javascript
+disconnect = function() {
+  $.ajax({
+    type: 'GET',
+    url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
+        gapi.auth.getToken().access_token,
+    contentType: 'application/json',
+    dataType: 'jsonp',
+    success: function(result) {
+      console.log('revoke response: ' + result);
+      $('#gDisconnect').hide();
+      $('#profile').empty();
+      $('#people').empty();
+      $('#authResult').empty();
+      $('#gConnect').show();
+    },
+    error: function(e) {
+      console.log(e);
+    }
+  });
+};
+```
+
+If there's an error we can just log it. We can plug in the onlick handler just after we show the button in the onSignInCallback:
+
+```javascript
+$('#disconnect').click(disconnect);
+```
+
+Then, when the user disconnects we'll revoke all their tokens, forget their data, and reset the page to the original state.
+
+7. That's it!
+-------------------------
+
+You now have signed in, retrieved the user's details, and disconnected. There are more Quickstarts which show how to do this in a number of languages up on the Google+ Developers page. There's also a whole lot of documentation, and examples of how to implement each of the other features. 
 
 https://developers.google.com/+/
