@@ -5,6 +5,7 @@ Prerequisites
 
 1. Internet connection
 1. Webserver to run the sample from. It wont work from file://
+1. Some browser developer tools
 
 On systems with Python installed you can start a server against the local directory with:
     python -m SimpleHTTPServer 8080
@@ -13,9 +14,7 @@ This will server the current directory on http://localhost:8080
 
 An alternative if you have no webserver is to paste the contents into a JSBin snippet: http://jsbin.com/
 
-3. Some browser developer tools
-
-Chrome or Firefox developer tools are convenient, for debugging and seeing the calls back and forth. 
+Chrome or Firefox developer tools are convenient, for debugging and seeing the calls back and forth.
 
 Steps
 ================================
@@ -34,7 +33,7 @@ The next step is to add the sign-in button to the page, and to create a Javascri
 
 First we need to add the asynchronous javascript snippet to load the Google+ API from https://developers.google.com/+/web/signin/#step_2_include_the_google_script_on_your_page
 
-```javascript
+```html
 <script type="text/javascript">
 (function() {
   var po = document.createElement('script');
@@ -115,7 +114,7 @@ function onSignInCallback(authResult) {
 You need to reference that in your button, so add your function name in as the callback: 
 
 ```html
-    data-callback="onSignInCallback"
+data-callback="onSignInCallback"
 ```
     
 Now when you reload the page, if you open your developer console you should see the "Callback Fired" option. When you click the button you should be presented with a consent dialogue properly. 
@@ -147,7 +146,7 @@ If you haven't signed in yet, you'll see that the error you get when not signed 
 Lets finish up by printing out the contents of the access_token. Add the following HTML to your application just below the button:
 
 ```html
-    <div id="authresult"></div>
+<div id="authresult"></div>
 ```
     
 In in the access_token part of you onSignInCallback function, populate that with the data from the authResult:
@@ -174,10 +173,11 @@ First, we'll need to load the gapi client library. This has methods for communic
 Under the code to output authResult, still in the access_token block, add the following:
 
 ```javascript
-    gapi.client.load('plus','v1', function(){
-      load_profile();
-      load_friends();
-    });
+gapi.client.load('plus','v1', function(){
+  load_profile();
+  load_friends();
+});
+```
 
 As you might guess, next is implementing load_profile and load_friends! Add some HTML blocks to contain the information above the authresult div in the body of the page. 
 
@@ -223,4 +223,6 @@ function load_friends() {
 6. That's it!
 -------------------------
 
-You now have signed in, and retrieved the users details. There are more quickstarts which show how to do this in a number of languages up on the Google+ Developers page. There's also a whole lot of documentation, and examples of how to implement each of the other features. 
+You now have signed in, and retrieved the users details. There are more Quickstarts which show how to do this in a number of languages up on the Google+ Developers page. There's also a whole lot of documentation, and examples of how to implement each of the other features. 
+
+https://developers.google.com/+/
