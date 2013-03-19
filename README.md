@@ -153,7 +153,7 @@ Lets finish up by printing out the contents of the access_token. Add the followi
 In in the access_token part of you onSignInCallback function, populate that with the data from the authResult:
 
 ```javascript
-$('#authresult').html('Auth Result:</br>')
+$('#authresult').html('Auth Result:</br>');
 for (var field in authResult) {
   $('#authresult').append(' ' + field + ': ' + 
                           authResult[field] + '<br />');
@@ -257,8 +257,8 @@ disconnect = function() {
       $('#gDisconnect').hide();
       $('#profile').empty();
       $('#people').empty();
-      $('#authResult').empty();
-      $('#gConnect').show();
+      $('#authresult').empty();
+      $('#gPlusButton').show();
     },
     error: function(e) {
       console.log(e);
