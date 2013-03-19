@@ -8,9 +8,10 @@ Prerequisites
 1. Some browser developer tools
 
 On systems with Python installed you can start a server against the local directory with:
-    python -m SimpleHTTPServer 8080
-
-This will server the current directory on http://localhost:8080
+```bash
+python -m SimpleHTTPServer 8080
+```
+This will serve the current directory on http://localhost:8080
 
 An alternative if you have no webserver is to paste the contents into a JSBin snippet: http://jsbin.com/
 
